@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbits COGs Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">Orbits COGs</div>
+            <ul class="nav">
+                <li class="nav-item active" data-tab="resin">Resin</li>
+                <li class="nav-item" data-tab="pigment">Pigment</li>
+                <li class="nav-item" data-tab="cost">Cost</li>
+                <li class="nav-item" data-tab="dashboard">Dashboard</li>
+            </ul>
+            <button class="settings-btn">⚙️</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Resin Tab -->
+            <div class="tab-content active" id="resin">
+                <h2>Resin Management</h2>
+                <div class="collapsible">
+                    <button class="collapsible-btn">Add Resin</button>
+                    <div class="collapsible-content">
+                        <form id="resin-form">
+                            <div class="form-group">
+                                <input type="text" id="resin-name" placeholder="Resin Name" required>
+                                <span class="tooltip">Name of the resin product</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-gallons" placeholder="Gallons" step="0.01">
+                                <span class="tooltip">Enter gallons (auto-converts to ounces)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-ounces" placeholder="Ounces" step="0.01">
+                                <span class="tooltip">Total ounces (auto-filled from gallons)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-cost" placeholder="Cost w/o Tax ($)" step="0.01" required>
+                                <span class="tooltip">Cost of resin before taxes</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-shipping" placeholder="Shipping ($)" step="0.01" required>
+                                <span class="tooltip">Shipping cost for this resin</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-taxes" placeholder="Taxes ($)" step="0.01" required>
+                                <span class="tooltip">Taxes (auto-filled based on settings tax rate)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="resin-shipping-days" placeholder="Shipping ETA (Days)" required>
+                                <span class="tooltip">Estimated shipping time in days</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="url" id="resin-source" placeholder="Source URL" required>
+                                <span class="tooltip">Link to purchase the resin</span>
+                            </div>
+                            <button type="submit">Add Resin</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="resin-table">
+                        <thead>
+                            <tr>
+                                <th class="tooltip">Name<span class="tooltiptext">Resin Name</span></th>
+                                <th class="tooltip">Gallons<span class="tooltiptext">Total gallons</span></th>
+                                <th class="tooltip">Ounces<span class="tooltiptext">Total ounces</span></th>
+                                <th class="tooltip">Cost w/o Tax ($)<span class="tooltiptext">Cost before taxes</span></th>
+                                <th class="tooltip">Shipping ($)<span class="tooltiptext">Shipping cost</span></th>
+                                <th class="tooltip">Taxes ($)<span class="tooltiptext">Tax amount</span></th>
+                                <th class="tooltip">Total Cost ($)<span class="tooltiptext">Cost + Shipping + Taxes</span></th>
+                                <th class="tooltip">Price/Orbit ($)<span class="tooltiptext">Price per orbit from settings</span></th>
+                                <th class="tooltip"># of Orbits<span class="tooltiptext">Total ounces ÷ Orbit size (from settings)</span></th>
+                                <th class="tooltip">Cost/Oz ($)<span class="tooltiptext">Total cost ÷ Total ounces</span></th>
+                                <th class="tooltip">Resin/Orbit Cost ($)<span class="tooltiptext">Total cost ÷ Number of orbits</span></th>
+                                <th class="tooltip">Shipping ETA (Days)<span class="tooltiptext">Estimated shipping time</span></th>
+                                <th class="tooltip">Source<span class="tooltiptext">Purchase link</span></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pigment Tab -->
+            <div class="tab-content" id="pigment">
+                <h2>Pigment Management</h2>
+                <div class="collapsible">
+                    <button class="collapsible-btn">Add Pigment</button>
+                    <div class="collapsible-content">
+                        <form id="pigment-form">
+                            <div class="form-group">
+                                <input type="text" id="pigment-name" placeholder="Pigment Name" required>
+                                <span class="tooltip">Name of the pigment</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="pigment-grams" placeholder="Grams" required>
+                                <span class="tooltip">Total grams of pigment</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="pigment-cost" placeholder="Cost w/o Tax ($)" step="0.01" required>
+                                <span class="tooltip">Cost of pigment before taxes</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="pigment-shipping" placeholder="Shipping ($)" step="0.01" required>
+                                <span class="tooltip">Shipping cost for this pigment</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="pigment-taxes" placeholder="Taxes ($)" step="0.01" required>
+                                <span class="tooltip">Taxes (auto-filled based on settings tax rate)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="pigment-shipping-days" placeholder="Shipping ETA (Days)" required>
+                                <span class="tooltip">Estimated shipping time in days</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="url" id="pigment-source" placeholder="Source URL" required>
+                                <span class="tooltip">Link to purchase the pigment</span>
+                            </div>
+                            <button type="submit">Add Pigment</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="pigment-table">
+                        <thead>
+                            <tr>
+                                <th class="tooltip">Name<span class="tooltiptext">Pigment Name</span></th>
+                                <th class="tooltip">Grams<span class="tooltiptext">Total grams</span></th>
+                                <th class="tooltip">Cost w/o Tax ($)<span class="tooltiptext">Cost before taxes</span></th>
+                                <th class="tooltip">Shipping ($)<span class="tooltiptext">Shipping cost</span></th>
+                                <th class="tooltip">Taxes ($)<span class="tooltiptext">Tax amount</span></th>
+                                <th class="tooltip">Total Cost ($)<span class="tooltiptext">Cost + Shipping + Taxes</span></th>
+                                <th class="tooltip">Grams/Orbit<span class="tooltiptext">Grams needed per orbit: (Orbit Size × Pigment %) × 28.35</span></th>
+                                <th class="tooltip"># of Orbits<span class="tooltiptext">Total grams ÷ Grams per Orbit</span></th>
+                                <th class="tooltip">Cost/Gram ($)<span class="tooltiptext">Cost per gram</span></th>
+                                <th class="tooltip">Pigment/Orbit Cost ($)<span class="tooltiptext">Grams per Orbit × Cost per Gram</span></th>
+                                <th class="tooltip">Shipping ETA (Days)<span class="tooltiptext">Estimated shipping time</span></th>
+                                <th class="tooltip">Source<span class="tooltiptext">Purchase link</span></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cost Tab -->
+            <div class="tab-content" id="cost">
+                <h2>Cost & Profit Calculator</h2>
+                <div class="collapsible">
+                    <button class="collapsible-btn">Calculate Costs</button>
+                    <div class="collapsible-content">
+                        <form id="cost-form">
+                            <div class="form-group">
+                                <input type="text" id="cost-invoice" placeholder="Invoice ID" required>
+                                <span class="tooltip">Unique identifier for this order</span>
+                            </div>
+                            <div class="form-group">
+                                <select id="cost-resin" required><option value="">Select Resin</option></select>
+                                <span class="tooltip">Choose a resin from your inventory</span>
+                            </div>
+                            <div class="form-group">
+                                <select id="cost-pigment" required><option value="">Select Pigment</option></select>
+                                <span class="tooltip">Choose a pigment from your inventory</span>
+                            </div>
+                            <div class="form-group">
+                                <select id="cost-customer" required>
+                                    <option value="">Select Customer Type</option>
+                                    <option value="amazon">Amazon</option>
+                                    <option value="consignment">Consignment</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="online">Online</option>
+                                    <option value="bulk">Bulk</option>
+                                </select>
+                                <span class="tooltip">Select sales channel (discounts applied from settings)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="cost-custom-discount" placeholder="Custom Discount % (optional)" step="0.01">
+                                <span class="tooltip">Overrides default discounts if provided</span>
+                            </div>
+                            <div class="form-group">
+                                <select id="cost-shipping-payer">
+                                    <option value="manufacturer">Manufacturer Pays Shipping</option>
+                                    <option value="customer">Customer Pays Shipping</option>
+                                </select>
+                                <span class="tooltip">Who covers the shipping cost?</span>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" id="cost-include-stand"> Include Stand Cost</label>
+                                <span class="tooltip">Check to include stand cost in calculations</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="cost-orbit-size" placeholder="Orbit Size (cm)" step="0.01" required>
+                                <span class="tooltip">Size of orbit in cm (converts to oz)</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="cost-quantity" placeholder="Quantity (Orbits)" required>
+                                <span class="tooltip">Number of orbits in this order</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="cost-packs" placeholder="Packs" required>
+                                <span class="tooltip">Number of packs (auto-calculated from quantity)</span>
+                            </div>
+                            <button type="submit">Calculate</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="cost-summary">
+                    <h3>Cost Summary</h3>
+                    <div id="cost-summary"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="tab-content" id="dashboard">
+                <h2>Dashboard</h2>
+                <div class="dashboard-content">
+                    <p><strong>Total Resin Stock:</strong> <span id="dash-resin-stock">0.00</span> gallons</p>
+                    <p><strong>Total Pigment Stock:</strong> <span id="dash-pigment-stock">0.00</span> grams</p>
+                    <p><strong>Avg Cost per Orbit:</strong> $<span id="dash-avg-cost">0.00</span></p>
+                    <p><strong>Recent Profit:</strong> $<span id="dash-recent-profit">0.00</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-panel">
+            <h3>Running Calculations</h3>
+            <div id="calc-summary">
+                <p><strong>Resin Cost:</strong> $<span id="calc-resin-cost">0.00</span></p>
+                <p><strong>Pigment Cost:</strong> $<span id="calc-pigment-cost">0.00</span></p>
+                <p><strong>Manufacturing Cost:</strong> $<span id="calc-manufacturing-cost">0.00</span></p>
+                <p><strong>Selling Price:</strong> $<span id="calc-selling-price">0.00</span></p>
+                <p><strong>Profit:</strong> $<span id="calc-profit">0.00</span></p>
+            </div>
+        </div>
+
+        <!-- Settings Popup -->
+        <div class="modal" id="settings-modal">
+            <div class="modal-content">
+                <span class="close-btn">×</span>
+                <h2>Settings</h2>
+                <form id="settings-form">
+                    <div class="form-group">
+                        <label>Price to Customer per Orbit ($)</label>
+                        <input type="number" id="settings-orbit-price" step="0.01" required>
+                        <span class="tooltip">Selling price of one orbit to the customer</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Cost per Box ($)</label>
+                        <input type="number" id="settings-box-cost" step="0.01" required>
+                        <span class="tooltip">Cost of packaging box per pack</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Shipping Rate ($/lb)</label>
+                        <input type="number" id="settings-shipping-rate" step="0.01" required>
+                        <span class="tooltip">Shipping cost per pound</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Pigment Percent (%)</label>
+                        <input type="number" id="settings-pigment-percent" step="0.01" required>
+                        <span class="tooltip">Percentage of pigment per ounce of resin</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Default Orbit Size (oz)</label>
+                        <input type="number" id="settings-orbit-size" step="0.01" required>
+                        <span class="tooltip">Default ounces of resin per orbit</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Ounces per CM</label>
+                        <input type="number" id="settings-oz-per-cm" step="0.01" required>
+                        <span class="tooltip">Ounces of resin per centimeter of orbit size</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Stand Cost ($)</label>
+                        <input type="number" id="settings-stand-cost" step="0.01" required>
+                        <span class="tooltip">Cost of stand for retail display (per orbit)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Orbits per Pack</label>
+                        <input type="number" id="settings-pack-size" required>
+                        <span class="tooltip">Number of orbits in one pack</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Manufacturing Tax Rate (%)</label>
+                        <input type="number" id="settings-manufacturing-tax-rate" step="0.01" required>
+                        <span class="tooltip">Tax rate on manufacturing costs (paid by business)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Sales Tax Rate (%)</label>
+                        <input type="number" id="settings-customer-sales-tax-rate" step="0.01" required>
+                        <span class="tooltip">Tax rate charged to customer on selling price</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Income Tax Rate (%)</label>
+                        <input type="number" id="settings-business-income-tax-rate" step="0.01" required>
+                        <span class="tooltip">Tax rate on profits (paid by business)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Amazon Discount Rate (%)</label>
+                        <input type="number" id="settings-amazon-rate" step="0.01" required>
+                        <span class="tooltip">Discount rate for Amazon sales</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Consignment Discount Rate (%)</label>
+                        <input type="number" id="settings-consignment-rate" step="0.01" required>
+                        <span class="tooltip">Discount rate for consignment sales</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Monthly Fixed Costs ($)</label>
+                        <input type="number" id="settings-fixed-costs" step="0.01" required>
+                        <span class="tooltip">Monthly overhead costs (e.g., rent, utilities)</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Net Margin (%)</label>
+                        <input type="number" id="settings-target-margin" step="0.01" required>
+                        <span class="tooltip">Desired net margin for profitability</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Reserve Fund Percentage (%)</label>
+                        <input type="number" id="settings-reserve-fund" step="0.01" required>
+                        <span class="tooltip">Percentage of profit to set aside for taxes/emergencies</span>
+                    </div>
+                    <button type="submit">Save Settings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
